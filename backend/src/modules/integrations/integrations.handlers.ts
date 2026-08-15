@@ -49,7 +49,7 @@ export async function importCampusHandler(
   reply: FastifyReply,
 ): Promise<void> {
   integrationsService.rejectPasswords(request.body);
-  const result = await integrationsService.importFromCampus(request.user.token, request.user.id);
+  const result = await integrationsService.importFromCampus();
   await reply.status(200).send(result);
 }
 

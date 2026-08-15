@@ -209,7 +209,7 @@ export class IntegrationsService {
    * RF-046–048 — sin extensión de campus, el prototipo responde con cursos demo
    * (documentado). Nunca acepta ni persiste contraseñas.
    */
-  async importFromCampus(_token: string, _userId: string) {
+  async importFromCampus() {
     return {
       imported: 0,
       demo: true as const,
