@@ -1,0 +1,707 @@
+🎓 ACADEMIC COPILOT
+Módulo 1 — Gestión de usuarios y autenticación
+Requerimientos funcionales
+
+RF-001. El sistema deberá permitir registrar estudiantes mediante correo electrónico y contraseña.
+
+RF-002. El sistema deberá permitir iniciar sesión.
+
+RF-003. El sistema deberá permitir cerrar sesión.
+
+RF-004. El sistema deberá permitir recuperar la contraseña.
+
+RF-005. El sistema deberá permitir modificar los datos personales.
+
+RF-006. El sistema deberá permitir agregar fotografía de perfil.
+
+RF-007. El sistema deberá permitir configurar preferencias de aprendizaje.
+
+RF-008. El sistema deberá permitir seleccionar el idioma de la aplicación.
+
+RF-009. El sistema deberá permitir eliminar la cuenta.
+
+RF-010. El sistema deberá mantener separada la información académica de cada estudiante.
+
+Historias de usuario
+
+HU-001 — Registro
+
+Como estudiante, quiero crear una cuenta para utilizar Academic Copilot y almacenar mi información académica.
+
+HU-002 — Inicio de sesión
+
+Como estudiante, quiero iniciar sesión para acceder a mis cursos y progreso.
+
+HU-003 — Recuperación
+
+Como estudiante, quiero recuperar mi contraseña para volver a acceder a mi cuenta.
+
+HU-004 — Perfil
+
+Como estudiante, quiero configurar mi perfil académico para recibir recomendaciones personalizadas.
+
+Módulo 2 — Institución, carrera y período académico
+RF
+
+RF-011. El sistema deberá permitir seleccionar una institución educativa.
+
+RF-012. El sistema deberá permitir registrar una institución que no se encuentre disponible.
+
+RF-013. El sistema deberá permitir registrar la carrera.
+
+RF-014. El sistema deberá permitir registrar el grado académico.
+
+RF-015. El sistema deberá permitir registrar el período académico.
+
+RF-016. El sistema deberá permitir cambiar de período académico.
+
+RF-017. El sistema deberá permitir consultar el historial académico.
+
+RF-018. El sistema deberá permitir registrar materias aprobadas.
+
+RF-019. El sistema deberá permitir registrar materias reprobadas.
+
+RF-020. El sistema deberá calcular el avance académico.
+
+HU
+
+HU-005
+
+Como estudiante, quiero registrar mi universidad para adaptar la aplicación a mi institución.
+
+HU-006
+
+Como estudiante, quiero registrar mi carrera para organizar mis materias.
+
+HU-007
+
+Como estudiante, quiero indicar qué materias ya aprobé para conocer mi progreso.
+
+HU-008
+
+Como estudiante, quiero visualizar mi avance académico para saber cuánto me falta para completar mi carrera.
+
+Módulo 3 — Plan de estudios mediante PDF
+RF
+
+RF-021. El sistema deberá permitir cargar un plan de estudios en PDF.
+
+RF-022. El sistema deberá validar que el archivo sea compatible.
+
+RF-023. El sistema deberá extraer texto del documento.
+
+RF-024. El sistema deberá identificar las materias.
+
+RF-025. El sistema deberá identificar códigos de materias.
+
+RF-026. El sistema deberá identificar créditos.
+
+RF-027. El sistema deberá identificar prerrequisitos.
+
+RF-028. El sistema deberá identificar materias electivas.
+
+RF-029. El sistema deberá generar una estructura académica a partir del documento.
+
+RF-030. El estudiante podrá corregir información extraída.
+
+RF-031. El sistema deberá identificar posibles inconsistencias.
+
+HU
+
+HU-009
+
+Como estudiante, quiero subir mi plan de estudios para evitar registrar manualmente todas mis materias.
+
+HU-010
+
+Como estudiante, quiero que el sistema detecte los prerrequisitos para saber qué materias puedo cursar.
+
+HU-011
+
+Como estudiante, quiero corregir la información extraída para asegurar que mi plan sea correcto.
+
+Módulo 4 — Cursos y horario
+RF
+
+RF-032. El sistema deberá permitir crear cursos.
+
+RF-033. El sistema deberá asociar cursos con materias.
+
+RF-034. El sistema deberá permitir registrar profesores.
+
+RF-035. El sistema deberá permitir registrar horarios.
+
+RF-036. El sistema deberá permitir registrar aulas.
+
+RF-037. El sistema deberá permitir indicar modalidad presencial, virtual o híbrida.
+
+RF-038. El sistema deberá mostrar un calendario semanal.
+
+RF-039. El sistema deberá permitir modificar horarios.
+
+RF-040. El sistema deberá permitir eliminar horarios.
+
+RF-041. El sistema deberá identificar automáticamente cuándo termina una clase.
+
+HU
+
+HU-012
+
+Como estudiante, quiero registrar mis cursos para organizar mi actividad académica.
+
+HU-013
+
+Como estudiante, quiero registrar mi horario para recibir recordatorios después de cada clase.
+
+HU-014
+
+Como estudiante, quiero visualizar mi calendario semanal para organizar mi tiempo.
+
+Módulo 5 — Integración con Campus Virtual
+RF
+
+RF-042. El sistema deberá permitir conectar plataformas educativas compatibles.
+
+RF-043. El sistema deberá permitir utilizar una extensión de navegador.
+
+RF-044. La extensión deberá detectar el curso visualizado cuando sea técnicamente posible.
+
+RF-045. La extensión podrá identificar materiales disponibles.
+
+RF-046. El sistema podrá importar documentos autorizados.
+
+RF-047. El sistema podrá importar enlaces.
+
+RF-048. El sistema podrá importar información de tareas.
+
+RF-049. El sistema deberá permitir desconectar la integración.
+
+RF-050. El sistema no deberá almacenar contraseñas del Campus Virtual.
+
+HU
+
+HU-015
+
+Como estudiante, quiero conectar mi Campus Virtual para evitar cargar manualmente todos mis materiales.
+
+HU-016
+
+Como estudiante, quiero importar los materiales de un curso para que la IA pueda analizarlos.
+
+HU-017
+
+Como estudiante, quiero desconectar mi Campus Virtual cuando lo desee para controlar mi información.
+
+Módulo 6 — Materiales académicos
+RF
+
+RF-051. El sistema deberá permitir cargar PDF.
+
+RF-052. El sistema deberá permitir cargar documentos.
+
+RF-053. El sistema deberá permitir cargar presentaciones.
+
+RF-054. El sistema deberá permitir cargar imágenes.
+
+RF-055. El sistema deberá permitir cargar videos.
+
+RF-056. El sistema deberá asociar cada material a un curso.
+
+RF-057. El sistema deberá permitir categorizar materiales.
+
+RF-058. El sistema deberá permitir buscar materiales.
+
+RF-059. El sistema deberá permitir eliminar materiales.
+
+RF-060. El sistema deberá generar metadatos del material.
+
+HU
+
+HU-018
+
+Como estudiante, quiero cargar mis materiales para tenerlos organizados en un solo lugar.
+
+HU-019
+
+Como estudiante, quiero asociar un PDF con una materia para que la IA conozca el contexto.
+
+HU-020
+
+Como estudiante, quiero buscar mis materiales rápidamente para encontrar información específica.
+
+Módulo 7 — Análisis de clases y videos
+RF
+
+RF-061. El sistema deberá permitir cargar videos MP4.
+
+RF-062. El sistema deberá extraer el audio.
+
+RF-063. El sistema deberá generar una transcripción.
+
+RF-064. El sistema deberá identificar los temas tratados.
+
+RF-065. El sistema deberá identificar conceptos importantes.
+
+RF-066. El sistema deberá generar un resumen.
+
+RF-067. El sistema deberá generar palabras clave.
+
+RF-068. El sistema deberá asociar conceptos con timestamps cuando sea posible.
+
+RF-069. El sistema deberá permitir realizar preguntas sobre el video.
+
+RF-070. El sistema deberá permitir acceder a un momento específico del video.
+
+RF-071. El sistema deberá identificar ejercicios explicados.
+
+RF-072. El sistema deberá identificar ejemplos utilizados por el profesor.
+
+HU
+
+HU-021
+
+Como estudiante, quiero subir una grabación de mi clase para obtener una transcripción y resumen.
+
+HU-022
+
+Como estudiante, quiero saber qué temas explicó el profesor para organizar mi estudio.
+
+HU-023
+
+Como estudiante, quiero localizar el momento exacto donde se explicó un concepto para repasarlo.
+
+HU-024
+
+Como estudiante, quiero preguntarle a la IA sobre el contenido del video para resolver dudas.
+
+Módulo 8 — Integración con Microsoft Teams
+RF
+
+RF-073. El sistema deberá permitir autenticación mediante una cuenta Microsoft compatible.
+
+RF-074. El sistema deberá solicitar los permisos necesarios.
+
+RF-075. El sistema deberá consultar reuniones disponibles cuando la integración lo permita.
+
+RF-076. El sistema podrá obtener transcripciones autorizadas.
+
+RF-077. El sistema podrá obtener grabaciones autorizadas.
+
+RF-078. El sistema deberá asociar una reunión con un curso.
+
+RF-079. El sistema deberá procesar la transcripción.
+
+RF-080. El estudiante deberá poder desconectar Teams.
+
+HU
+
+HU-025
+
+Como estudiante, quiero conectar Teams para acceder a mis clases grabadas.
+
+HU-026
+
+Como estudiante, quiero que las transcripciones de mis clases sean analizadas para identificar qué debo reforzar.
+
+HU-027
+
+Como estudiante, quiero relacionar una reunión de Teams con una materia para mantener organizada mi información.
+
+Nota: este módulo lo dejaría para una fase posterior porque depende de permisos de Microsoft y de la configuración de la institución.
+
+Módulo 9 — Check-in después de clase
+
+Este sería uno de los módulos principales.
+
+RF
+
+RF-081. El sistema deberá detectar la finalización de una clase registrada.
+
+RF-082. El sistema deberá enviar una notificación de check-in.
+
+RF-083. El sistema deberá identificar el curso.
+
+RF-084. El sistema deberá preguntar qué se vio durante la clase.
+
+RF-085. El sistema deberá sugerir temas detectados automáticamente.
+
+RF-086. El estudiante podrá confirmar o modificar los temas.
+
+RF-087. El sistema deberá preguntar el nivel de comprensión.
+
+RF-088. El sistema deberá preguntar cuáles partes resultaron difíciles.
+
+RF-089. El sistema deberá generar preguntas de diagnóstico.
+
+RF-090. El sistema deberá analizar las respuestas.
+
+HU
+
+HU-028
+
+Como estudiante, quiero recibir un check-in después de cada clase para reflexionar sobre lo aprendido.
+
+HU-029
+
+Como estudiante, quiero indicar qué temas vimos para registrar lo aprendido.
+
+HU-030
+
+Como estudiante, quiero indicar qué partes no entendí para recibir ayuda específica.
+
+HU-031
+
+Como estudiante, quiero responder preguntas sobre la clase para comprobar si realmente comprendí.
+
+Módulo 10 — Evaluación y brechas de conocimiento
+RF
+
+RF-091. El sistema deberá almacenar el dominio de cada concepto.
+
+RF-092. El sistema deberá calcular un porcentaje de dominio.
+
+RF-093. El sistema deberá detectar conceptos con bajo dominio.
+
+RF-094. El sistema deberá clasificar las brechas.
+
+RF-095. El sistema deberá priorizar las brechas.
+
+RF-096. El sistema deberá considerar prerrequisitos.
+
+RF-097. El sistema deberá considerar próximas evaluaciones.
+
+RF-098. El sistema deberá actualizar el nivel de dominio después de cada evaluación.
+
+HU
+
+HU-032
+
+Como estudiante, quiero conocer qué conceptos no domino para saber qué debo estudiar.
+
+HU-033
+
+Como estudiante, quiero que el sistema priorice mis dificultades para estudiar primero lo más importante.
+
+HU-034
+
+Como estudiante, quiero ver cómo cambia mi dominio después de practicar.
+
+Módulo 11 — Tutor académico IA
+RF
+
+RF-099. El sistema deberá proporcionar un asistente académico.
+
+RF-100. El asistente deberá responder preguntas relacionadas con los cursos.
+
+RF-101. El asistente deberá utilizar los materiales autorizados del estudiante como contexto.
+
+RF-102. El asistente deberá poder explicar conceptos de diferentes maneras.
+
+RF-103. El asistente deberá proporcionar ejemplos.
+
+RF-104. El asistente deberá generar analogías.
+
+RF-105. El asistente deberá explicar errores.
+
+RF-106. El asistente deberá poder responder preguntas sobre una clase específica.
+
+HU
+
+HU-035
+
+Como estudiante, quiero preguntarle al tutor IA sobre un tema que no entendí.
+
+HU-036
+
+Como estudiante, quiero solicitar una explicación diferente cuando la explicación original no sea suficiente.
+
+HU-037
+
+Como estudiante, quiero que el tutor utilice mis materiales para recibir explicaciones relacionadas con mi curso.
+
+Módulo 12 — Plan personalizado de aprendizaje
+RF
+
+RF-107. El sistema deberá generar planes personalizados.
+
+RF-108. El sistema deberá considerar las brechas de conocimiento.
+
+RF-109. El sistema deberá considerar el tiempo disponible.
+
+RF-110. El sistema deberá considerar la proximidad de la siguiente clase.
+
+RF-111. El sistema deberá recomendar técnicas de aprendizaje.
+
+RF-112. El sistema deberá dividir los objetivos en actividades.
+
+RF-113. El sistema deberá establecer duración estimada.
+
+RF-114. El sistema deberá permitir completar actividades.
+
+RF-115. El sistema deberá ajustar el plan según el rendimiento.
+
+HU
+
+HU-038
+
+Como estudiante, quiero recibir un plan de estudio personalizado para saber qué estudiar cada día.
+
+HU-039
+
+Como estudiante, quiero saber cuánto tiempo dedicar a cada tema para organizar mejor mi tiempo.
+
+HU-040
+
+Como estudiante, quiero que el plan cambie según mi rendimiento para no estudiar contenido que ya domino.
+
+Módulo 13 — Generación de prácticas
+RF
+
+RF-116. El sistema deberá generar ejercicios personalizados.
+
+RF-117. El sistema deberá utilizar las brechas del estudiante.
+
+RF-118. El sistema deberá considerar el contenido de las clases.
+
+RF-119. El sistema deberá considerar ejemplos proporcionados por el profesor.
+
+RF-120. El sistema deberá adaptar la dificultad.
+
+RF-121. El sistema deberá generar soluciones.
+
+RF-122. El sistema deberá explicar respuestas incorrectas.
+
+RF-123. El sistema deberá evitar repetir exactamente ejercicios existentes.
+
+RF-124. El sistema deberá registrar los resultados.
+
+HU
+
+HU-041
+
+Como estudiante, quiero que la aplicación genere ejercicios basados en mis dificultades.
+
+HU-042
+
+Como estudiante, quiero que los ejercicios tengan una dificultad y estructura similar a los trabajados en clase.
+
+HU-043
+
+Como estudiante, quiero recibir una explicación cuando cometa un error.
+
+HU-044
+
+Como estudiante, quiero que los ejercicios aumenten de dificultad conforme mejoro.
+
+Módulo 14 — Recursos educativos confiables
+RF
+
+RF-125. El sistema deberá buscar recursos relacionados con un concepto.
+
+RF-126. El sistema deberá clasificar las fuentes.
+
+RF-127. El sistema deberá priorizar fuentes confiables.
+
+RF-128. El sistema deberá mostrar el origen del recurso.
+
+RF-129. El sistema deberá explicar por qué recomienda el recurso.
+
+RF-130. El estudiante podrá guardar recursos.
+
+HU
+
+HU-045
+
+Como estudiante, quiero recibir fuentes confiables sobre un tema que no comprendí.
+
+HU-046
+
+Como estudiante, quiero conocer el origen de la información para poder confiar en ella.
+
+HU-047
+
+Como estudiante, quiero guardar recursos para estudiarlos posteriormente.
+
+Módulo 15 — Preparación para la siguiente clase
+
+Este módulo conecta todo lo anterior.
+
+RF
+
+RF-131. El sistema deberá identificar la próxima clase.
+
+RF-132. El sistema deberá identificar los temas relacionados.
+
+RF-133. El sistema deberá revisar el dominio del estudiante.
+
+RF-134. El sistema deberá identificar conocimientos que deberían reforzarse.
+
+RF-135. El sistema deberá generar una recomendación previa a la clase.
+
+RF-136. El sistema deberá generar una práctica previa.
+
+RF-137. El sistema deberá indicar el tiempo recomendado de preparación.
+
+HU
+
+HU-048
+
+Como estudiante, quiero saber qué debería repasar antes de mi próxima clase para llegar mejor preparado.
+
+HU-049
+
+Como estudiante, quiero recibir una práctica antes de una clase para comprobar mis conocimientos previos.
+
+HU-050
+
+Como estudiante, quiero conocer cuánto tiempo debería estudiar antes de la próxima clase.
+
+Módulo 16 — Progreso y estadísticas
+RF
+
+RF-138. El sistema deberá mostrar progreso general.
+
+RF-139. El sistema deberá mostrar progreso por materia.
+
+RF-140. El sistema deberá mostrar dominio por concepto.
+
+RF-141. El sistema deberá mostrar historial de evaluaciones.
+
+RF-142. El sistema deberá mostrar evolución del estudiante.
+
+RF-143. El sistema deberá mostrar materias con mayor dificultad.
+
+RF-144. El sistema deberá mostrar actividades completadas.
+
+RF-145. El sistema deberá mostrar tiempo dedicado al aprendizaje.
+
+HU
+
+HU-051
+
+Como estudiante, quiero ver mi progreso general para conocer mi evolución académica.
+
+HU-052
+
+Como estudiante, quiero ver mi dominio por materia para identificar dónde tengo más dificultades.
+
+HU-053
+
+Como estudiante, quiero consultar mi historial para comprobar mi evolución.
+
+Módulo 17 — Notificaciones
+RF
+
+RF-146. El sistema deberá enviar recordatorios de clases.
+
+RF-147. El sistema deberá enviar el check-in después de una clase.
+
+RF-148. El sistema deberá recordar actividades pendientes.
+
+RF-149. El sistema deberá recordar temas pendientes de repaso.
+
+RF-150. El sistema deberá notificar la proximidad de evaluaciones.
+
+RF-151. El estudiante podrá configurar las notificaciones.
+
+HU
+
+HU-054
+
+Como estudiante, quiero recibir un recordatorio después de clase para realizar el check-in.
+
+HU-055
+
+Como estudiante, quiero recibir recordatorios de estudio para no olvidar mis actividades.
+
+HU-056
+
+Como estudiante, quiero configurar qué notificaciones recibir.
+
+Módulo 18 — Administración y seguridad
+RF
+
+RF-152. El sistema deberá administrar usuarios.
+
+RF-153. El sistema deberá gestionar permisos.
+
+RF-154. El sistema deberá registrar actividades importantes.
+
+RF-155. El sistema deberá permitir bloquear cuentas.
+
+RF-156. El sistema deberá gestionar integraciones.
+
+RF-157. El sistema deberá gestionar límites de almacenamiento.
+
+RF-158. El sistema deberá permitir eliminar datos.
+
+HU
+
+HU-057
+
+Como administrador, quiero gestionar usuarios para mantener la seguridad de la plataforma.
+
+HU-058
+
+Como administrador, quiero consultar actividades importantes para detectar comportamientos anómalos.
+
+HU-059
+
+Como estudiante, quiero eliminar mis datos para tener control sobre mi información.
+
+📋 Resumen general
+Módulo	RF	Historias
+1. Usuarios	10	4
+2. Carrera	10	4
+3. Plan de estudios	11	3
+4. Cursos/horario	10	3
+5. Campus Virtual	9	3
+6. Materiales	10	3
+7. Videos/clases	12	4
+8. Teams	8	3
+9. Check-in	10	4
+10. Brechas	8	3
+11. Tutor IA	8	3
+12. Plan aprendizaje	9	3
+13. Prácticas	9	4
+14. Recursos	6	3
+15. Próxima clase	7	3
+16. Progreso	8	3
+17. Notificaciones	6	3
+18. Administración	7	3
+TOTAL	148 RF	59 HU
+🔧 Recomendación para tu proyecto
+
+No implementaría los 148 RF inmediatamente. Los dejaría como backlog completo del sistema y dividiría el desarrollo en fases:
+
+Fase 1 — MVP
+
+Usuarios
+Carrera
+PDF del plan de estudios
+Cursos
+Horario
+Materiales
+Check-in
+Tutor IA
+Brechas
+Prácticas
+Progreso
+
+Fase 2 — IA avanzada
+
+Análisis MP4
+Transcripción
+Timestamps
+Análisis de estilo del profesor
+Generación de prácticas basadas en clases
+Recursos confiables
+
+Fase 3 — Integraciones
+
+Extensión Chrome/Edge
+Campus Virtual
+Microsoft Teams
+Moodle/Canvas/otras plataformas
+
+Así el proyecto tiene 148 requerimientos funcionales como visión completa, pero puedes desarrollar primero un MVP manejable y luego demostrar que la arquitectura permite crecer.

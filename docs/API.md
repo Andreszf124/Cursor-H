@@ -78,6 +78,7 @@
 | DELETE | `/profile/avatar` | RF-006 | Eliminar foto | Sí |
 | GET | `/profile/preferences` | RF-007 | Preferencias de aprendizaje | Sí |
 | PATCH | `/profile/preferences` | RF-007 | Actualizar preferencias | Sí |
+| POST | `/onboarding/complete` | RF-001 | Marca `onboarding_completed` | Sí |
 
 ### PATCH `/profile`
 ```json
@@ -447,12 +448,20 @@ Max size: 50MB (pdf/doc), 500MB (video — Fase 2)
 
 | Método | Endpoint | RF |
 |--------|----------|-----|
+| GET | `/integrations` | RF-042 |
 | POST | `/integrations/campus/connect` | RF-042 |
 | DELETE | `/integrations/campus/disconnect` | RF-049 |
 | POST | `/integrations/campus/import` | RF-046–048 |
+| GET | `/integrations/teams/auth-url` | RF-073 |
+| POST | `/integrations/teams/callback` | RF-073 |
+| GET | `/integrations/teams/courses` | RF-075 |
 | POST | `/integrations/teams/connect` | RF-073 |
 | DELETE | `/integrations/teams/disconnect` | RF-080 |
 | GET | `/integrations/teams/meetings` | RF-075 |
+
+`GET /integrations/teams/auth-url` responde `{ available: false }` si no hay `MICROSOFT_CLIENT_ID`. `POST /integrations/campus/import` y `GET /integrations/teams/courses` pueden devolver `{ demo: true, courses }` en el prototipo. Nunca se acepta `password` (RF-050).
+
+`POST /onboarding/complete` (JWT) marca `profiles.onboarding_completed = true`.
 
 ---
 

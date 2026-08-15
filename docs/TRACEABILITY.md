@@ -5,88 +5,116 @@
 
 ---
 
-## Módulo 1 — Usuarios y Autenticación 🟢
+## Módulo 1 — Usuarios y Autenticación 🟢 ✅ Implementado (Fase 1A)
 
 | RF | HU | Frontend | Endpoint | Service | Database | Test |
 |----|-----|----------|----------|---------|----------|------|
-| RF-001 | HU-001 | `RegisterPage` | `POST /api/v1/auth/register` | `AuthService.register` | Supabase Auth | `auth.service.test.ts` |
-| RF-002 | HU-002 | `LoginPage` | `POST /api/v1/auth/login` | `AuthService.login` | Supabase Auth | `auth.service.test.ts` |
-| RF-003 | HU-002 | `AppShell` (logout btn) | `POST /api/v1/auth/logout` | `AuthService.logout` | Supabase Auth | `auth.service.test.ts` |
-| RF-004 | HU-003 | `ForgotPasswordPage` | `POST /api/v1/auth/forgot-password` | `AuthService.forgotPassword` | Supabase Auth | `auth.service.test.ts` |
-| RF-005 | HU-004 | `ProfilePage` | `PATCH /api/v1/profile` | `ProfileService.update` | `profiles` | `profile.service.test.ts` |
-| RF-006 | HU-004 | `ProfilePage` (avatar) | `POST /api/v1/profile/avatar` | `ProfileService.uploadAvatar` | `profiles`, Storage `avatars/` | `profile.service.test.ts` |
-| RF-007 | HU-004 | `ProfilePage` (prefs) | `PATCH /api/v1/profile/preferences` | `ProfileService.updatePreferences` | `learning_preferences` | `profile.service.test.ts` |
-| RF-008 | HU-004 | `ProfilePage` (language) | `PATCH /api/v1/profile` | `ProfileService.update` | `profiles.language` | `profile.service.test.ts` |
-| RF-009 | HU-004 | `ProfilePage` (delete) | `DELETE /api/v1/auth/account` | `AuthService.deleteAccount` | Supabase Auth + cascade | `auth.service.test.ts` |
-| RF-010 | HU-001–004 | — (transversal) | — (middleware) | `auth.middleware` + RLS | All tables RLS | `security.idor.test.ts` |
+| RF-001 | HU-001 | `features/auth/pages/RegisterPage.tsx` (wizard), `features/onboarding/*` | `POST /api/v1/auth/register`, `POST /api/v1/onboarding/complete` | `AuthService.register`, `ProfileService.completeOnboarding` | Supabase Auth + trigger `on_auth_user_created` (003), `profiles.onboarding_completed` | `auth.test.ts`, `RegisterPage.test.tsx`, `onboarding.test.ts`, `OnboardingWizard.test.tsx` |
+| RF-002 | HU-002 | `features/auth/pages/LoginPage.tsx` | `POST /api/v1/auth/login` | `AuthService.login` | Supabase Auth | `auth.test.ts`, `LoginPage.test.tsx` |
+| RF-003 | HU-002 | `components/layout/AppShell.tsx` (logout) | `POST /api/v1/auth/logout` | `AuthService.logout` | Supabase Auth | `auth.test.ts` |
+| RF-004 | HU-003 | `ForgotPasswordPage.tsx`, `ResetPasswordPage.tsx` | `POST /api/v1/auth/forgot-password`, `POST /api/v1/auth/reset-password` | `AuthService.forgotPassword`, `AuthService.resetPassword` | Supabase Auth | `auth.test.ts` |
+| RF-005 | HU-004 | `features/profile/pages/ProfilePage.tsx` | `GET/PATCH /api/v1/profile` | `ProfileService.getProfile`, `ProfileService.updateProfile` | `profiles` | `profile.test.ts` |
+| RF-006 | HU-004 | `features/profile/components/AvatarUpload.tsx` | `POST/DELETE /api/v1/profile/avatar` | `ProfileService.uploadAvatar`, `ProfileService.deleteAvatar` (magic bytes) | `profiles.avatar_url`, Storage `avatars/{uid}/` | `profile.test.ts` |
+| RF-007 | HU-004 | `features/profile/components/PreferencesForm.tsx` | `GET/PATCH /api/v1/profile/preferences` | `ProfileService.getPreferences`, `ProfileService.updatePreferences` | `learning_preferences` (003) | `profile.test.ts` |
+| RF-008 | HU-004 | `ProfilePage.tsx` (selector idioma) | `PATCH /api/v1/profile` | `ProfileService.updateProfile` | `profiles.language` | `profile.test.ts` |
+| RF-009 | HU-004 | `features/profile/components/DeleteAccountSection.tsx` | `DELETE /api/v1/auth/account` | `AuthService.deleteAccount` (re-auth + limpieza Storage) | Supabase Auth + FK cascade | `auth.test.ts` |
+| RF-010 | HU-001–004 | `authStore.ts` (memoria), `ProtectedRoute` | — (transversal) | `shared/middleware/auth.middleware.ts` + `createUserClient(jwt)` | RLS `owner_access` en `profiles` y `learning_preferences` | `auth.test.ts`, `profile.test.ts` (anti-IDOR, 401/404, rate limit) |
+
+**Infraestructura del módulo:** `backend/src/shared/errors/app-error.ts`, `shared/middleware/error-handler.ts`, `shared/utils/file-validation.ts`, `frontend/src/services/api/client.ts`, `frontend/src/stores/authStore.ts`, migración `003_learning_preferences.sql`.
 
 ---
 
-## Módulo 2 — Institución, Carrera y Período 🟢
+## Módulo 2 — Institución, Carrera y Período 🟢 ✅ Implementado (Fase 1A.2)
 
 | RF | HU | Frontend | Endpoint | Service | Database | Test |
 |----|-----|----------|----------|---------|----------|------|
-| RF-011 | HU-005 | `CareerSetupPage` (step 1) | `GET /api/v1/institutions` | `CareerService.listInstitutions` | `institutions` | `career.service.test.ts` |
-| RF-012 | HU-005 | `CareerSetupPage` (custom) | `POST /api/v1/institutions` | `CareerService.createInstitution` | `institutions` | `career.service.test.ts` |
-| RF-013 | HU-006 | `CareerSetupPage` (step 2) | `POST /api/v1/career/setup` | `CareerService.setupCareer` | `careers`, `student_careers` | `career.service.test.ts` |
-| RF-014 | HU-006 | `CareerSetupPage` | `POST /api/v1/career/setup` | `CareerService.setupCareer` | `careers.degree_level` | `career.service.test.ts` |
-| RF-015 | HU-006 | `CareerSetupPage` (step 3) | `POST /api/v1/academic-periods` | `CareerService.createPeriod` | `academic_periods` | `career.service.test.ts` |
-| RF-016 | HU-006 | `CareerSetupPage` | `PATCH /api/v1/academic-periods/:id/activate` | `CareerService.activatePeriod` | `academic_periods` | `career.service.test.ts` |
-| RF-017 | HU-007 | `AcademicHistoryPage` | `GET /api/v1/academic-history` | `CareerService.getHistory` | `student_subject_status` | `career.service.test.ts` |
-| RF-018 | HU-007 | `AcademicHistoryPage` | `POST /api/v1/subjects/:id/status` | `CareerService.updateSubjectStatus` | `student_subject_status` | `career.service.test.ts` |
-| RF-019 | HU-007 | `AcademicHistoryPage` | `POST /api/v1/subjects/:id/status` | `CareerService.updateSubjectStatus` | `student_subject_status` | `career.service.test.ts` |
-| RF-020 | HU-008 | `ProgressOverview` | `GET /api/v1/academic-progress` | `CareerService.calculateProgress` | `student_subject_status`, `subjects` | `career.service.test.ts` |
+| RF-011 | HU-005 | `features/career/pages/CareerSetupPage.tsx` | `GET /api/v1/institutions` | `CareerService.listInstitutions` | `institutions` (004) | `career.test.ts` |
+| RF-012 | HU-005 | `CareerSetupPage` (custom) | `POST /api/v1/institutions` | `CareerService.createInstitution` | `institutions.created_by` | `career.test.ts` |
+| RF-013 | HU-006 | `CareerSetupPage` (step 2) | `POST /api/v1/career/setup`, `GET /career` | `CareerService.setupCareer` | `careers`, `student_careers` | `career.test.ts` |
+| RF-014 | HU-006 | `CareerSetupPage` | `POST /api/v1/career/setup` | `CareerService.setupCareer` | `careers.degree_level` | `career.test.ts` |
+| RF-015 | HU-006 | `CareerSetupPage` (step 3) | `POST/GET /api/v1/academic-periods` | `CareerService.createPeriod` | `academic_periods` | `career.test.ts` |
+| RF-016 | HU-006 | `CareerSetupPage` | `PATCH /api/v1/academic-periods/:id/activate` | `CareerService.activatePeriod` | `academic_periods` + trigger single active | `career.test.ts` |
+| RF-017 | HU-007 | `features/career/pages/AcademicHistoryPage.tsx` | `GET /api/v1/academic-history` | `CareerService.getHistory` | `subjects`, `student_subject_status` | `career.test.ts` |
+| RF-018 | HU-007 | `AcademicHistoryPage` | `POST /api/v1/subjects/:id/status` | `CareerService.updateSubjectStatus` | `student_subject_status` | `career.test.ts` |
+| RF-019 | HU-007 | `AcademicHistoryPage` | `POST /api/v1/subjects/:id/status` | `CareerService.updateSubjectStatus` | `student_subject_status` | `career.test.ts` |
+| RF-020 | HU-008 | `AcademicHistoryPage` (Progress) | `GET /api/v1/academic-progress` | `CareerService.calculateProgress` | `subjects`, `student_subject_status` | `career.test.ts` |
+
+**Infra:** migración `004_institutions_careers.sql`, `backend/src/modules/career/*`, rutas bajo `/api/v1`.
+
 
 ---
 
-## Módulo 3 — Plan de Estudios PDF 🟢
+## Módulo 3 — Plan de Estudios PDF 🟢 ✅ Implementado (Fase 1B)
 
 | RF | HU | Frontend | Endpoint | Service | Database | Test |
 |----|-----|----------|----------|---------|----------|------|
-| RF-021 | HU-009 | `CurriculumImportPage` | `POST /api/v1/curriculum/import` | `CurriculumService.upload` | `curriculum_imports`, Storage | `curriculum.service.test.ts` |
-| RF-022 | HU-009 | `CurriculumImportPage` | `POST /api/v1/curriculum/import` | `CurriculumService.validateFile` | — | `curriculum.validation.test.ts` |
-| RF-023 | HU-009 | — (async) | — (job) | `CurriculumService.extractText` | `processing_jobs` | `curriculum.extract.test.ts` |
-| RF-024 | HU-009 | `SubjectReviewTable` | `GET /api/v1/curriculum/imports/:id` | `CurriculumService.parseSubjects` | `curriculum_imports.extracted_data` | `curriculum.extract.test.ts` |
-| RF-025 | HU-009 | `SubjectReviewTable` | — (AI) | `AIProvider.analyzeContent` | — | `curriculum.extract.test.ts` |
-| RF-026 | HU-009 | `SubjectReviewTable` | — (AI) | `AIProvider.analyzeContent` | — | `curriculum.extract.test.ts` |
-| RF-027 | HU-010 | `PrerequisiteGraph` | `GET /api/v1/subjects/:id/prerequisites` | `CurriculumService.getPrerequisites` | `prerequisites` | `curriculum.service.test.ts` |
-| RF-028 | HU-009 | `SubjectReviewTable` | — (AI) | `AIProvider.analyzeContent` | — | `curriculum.extract.test.ts` |
-| RF-029 | HU-009 | `SubjectReviewTable` | `GET /api/v1/curriculum/imports/:id` | `CurriculumService.generateStructure` | `subjects`, `prerequisites` | `curriculum.service.test.ts` |
-| RF-030 | HU-011 | `SubjectReviewTable` (edit) | `PATCH /api/v1/curriculum/imports/:id` | `CurriculumService.updateExtracted` | `curriculum_imports` | `curriculum.service.test.ts` |
-| RF-031 | HU-011 | `InconsistencyAlert` | `GET /api/v1/curriculum/imports/:id/inconsistencies` | `CurriculumService.detectInconsistencies` | `curriculum_imports.inconsistencies` | `curriculum.service.test.ts` |
+| RF-021–031 | HU-009–011 | `features/curriculum/pages/ImportPage.tsx` | `/api/v1/curriculum/*`, `/subjects` | `CurriculumService` + AI stub | `005_curriculum_imports.sql` | `curriculum.test.ts` |
+
+## Módulo 4 — Cursos y Horario 🟢 ✅ Implementado (Fase 1B)
+
+| RF | HU | Frontend | Endpoint | Service | Database | Test |
+|----|-----|----------|----------|---------|----------|------|
+| RF-032–041 | HU-012–014 | `features/courses/*` | `/api/v1/courses`, `/professors`, `/classrooms`, `/schedules` | `CoursesService` | `006_courses_schedules.sql` | `courses.test.ts` |
+
+## Módulo 6 — Materiales 🟢 ✅ (Fase 1C)
+
+`modules/materials`, migración `007`, UI `/materials`, chunks+embeddings RAG.
+
+## Módulo 17 — Notificaciones 🟢 ✅ (slice + prefs Fase 1C/2)
+
+`modules/notifications`, migración `008`, sync check-in, preferencias.
+
+## Módulo 9 — Check-in 🟢 ✅ (Fase 1D)
+
+`modules/checkins`, migración `009`.
+
+## Módulo 10 — Brechas 🟢 ✅ (Fase 1D)
+
+`modules/knowledge`, migración `010`, assessments + mastery + gaps.
+
+## Módulo 11 — Tutor IA 🟢 ✅ (Fase 1E)
+
+`modules/tutor`, RAG fail-closed por `student_id` JWT, migración `011`.
+
+## Módulo 13 — Prácticas 🟢 ✅ (Fase 1E)
+
+`modules/practice`, dedupe por fingerprint, migración `011`.
+
+## Módulo 16 — Progreso 🟢 ✅ (Fase 1F)
+
+`modules/progress`, agregaciones mastery/checkins/practices.
+
+## Módulo 18 — Admin slice 🟢 ✅ (Fase 1F/3)
+
+`adminRoutes` cuotas + audit_logs (`012`), service role solo audit insert.
+
+## Fase 2 — Videos, Planes, Recursos, Prep 🟢 ✅
+
+`modules/fase2` + migración `013`: transcripts, learning_plans, resources, preparation.
+
+## Fase 3 — Integraciones 🟢 ✅
+
+`integrations` campus/teams sin passwords (RF-050), migración `014`. OAuth Teams: `GET /integrations/teams/auth-url`, `POST /integrations/teams/callback`. Importación demo si no hay Azure.
+
+Wizard UX: `RegisterPage` (pasos 1–3) + `OnboardingWizard` (universidad, prefs, Teams/demo, PDF opcional).
 
 ---
 
-## Módulo 4 — Cursos y Horario 🟢
+## Módulo 5 — Campus Virtual 🟢 ✅ (Fase 3)
+
+`POST /api/v1/integrations/campus/connect|disconnect` — sin passwords (RF-050).
 
 | RF | HU | Frontend | Endpoint | Service | Database | Test |
 |----|-----|----------|----------|---------|----------|------|
-| RF-032 | HU-012 | `CoursesPage`, `CourseForm` | `POST /api/v1/courses` | `CourseService.create` | `courses` | `course.service.test.ts` |
-| RF-033 | HU-012 | `CourseForm` (subject) | `POST /api/v1/courses` | `CourseService.create` | `courses.subject_id` | `course.service.test.ts` |
-| RF-034 | HU-012 | `CourseForm` (professor) | `POST /api/v1/professors` | `CourseService.createProfessor` | `professors` | `course.service.test.ts` |
-| RF-035 | HU-013 | `ScheduleForm` | `POST /api/v1/schedules` | `ScheduleService.create` | `schedules` | `schedule.service.test.ts` |
-| RF-036 | HU-013 | `ScheduleForm` (classroom) | `POST /api/v1/classrooms` | `ScheduleService.createClassroom` | `classrooms` | `schedule.service.test.ts` |
-| RF-037 | HU-012 | `CourseForm` (modality) | `POST /api/v1/courses` | `CourseService.create` | `courses.modality` | `course.service.test.ts` |
-| RF-038 | HU-014 | `WeeklyCalendar` | `GET /api/v1/schedules?week=` | `ScheduleService.getWeeklyCalendar` | `schedules`, `courses` | `schedule.service.test.ts` |
-| RF-039 | HU-013 | `ScheduleForm` (edit) | `PATCH /api/v1/schedules/:id` | `ScheduleService.update` | `schedules` | `schedule.service.test.ts` |
-| RF-040 | HU-013 | `ScheduleForm` (delete) | `DELETE /api/v1/schedules/:id` | `ScheduleService.delete` | `schedules` | `schedule.service.test.ts` |
-| RF-041 | HU-013 | — (scheduler) | — (internal) | `ScheduleService.detectClassEnd` | `schedules` | `schedule.detection.test.ts` |
-
----
-
-## Módulo 5 — Campus Virtual 🔴
-
-| RF | HU | Frontend | Endpoint | Service | Database | Test |
-|----|-----|----------|----------|---------|----------|------|
-| RF-042 | HU-015 | `IntegrationsPage` | `POST /api/v1/integrations/campus/connect` | `IntegrationService.connectCampus` | `integrations` | `integration.service.test.ts` |
-| RF-043 | HU-015 | Extensión browser | — (extension) | — | — | `extension.test.ts` |
+| RF-042 | HU-015 | `OnboardingWizard`, `CampusSelector`, `IntegrationsPage` | `POST /api/v1/integrations/campus/connect` | `IntegrationsService.connectCampus` | `integrations` | `integrations.test.ts` |
+| RF-043 | HU-015 | `CampusScanPanel`, `CampusPreviewPage` | pestaña + scrape DOM + `postMessage` | `scrapeCampusDocument` | — | `campusScan.test.ts` |
 | RF-044 | HU-015 | Extensión browser | — (extension) | `ExtensionService.detectCourse` | — | `extension.test.ts` |
 | RF-045 | HU-016 | Extensión browser | — (extension) | `ExtensionService.detectMaterials` | — | `extension.test.ts` |
-| RF-046 | HU-016 | `IntegrationsPage` | `POST /api/v1/integrations/campus/import` | `IntegrationService.importDocuments` | `materials` | `integration.service.test.ts` |
-| RF-047 | HU-016 | `IntegrationsPage` | `POST /api/v1/integrations/campus/import` | `IntegrationService.importLinks` | `materials` | `integration.service.test.ts` |
-| RF-048 | HU-016 | `IntegrationsPage` | `POST /api/v1/integrations/campus/import` | `IntegrationService.importTasks` | — | `integration.service.test.ts` |
-| RF-049 | HU-017 | `IntegrationsPage` | `DELETE /api/v1/integrations/campus/disconnect` | `IntegrationService.disconnect` | `integrations` | `integration.service.test.ts` |
-| RF-050 | HU-015 | — (design) | — | — | No password storage | `security.integration.test.ts` |
+| RF-046 | HU-016 | `CourseImportPreview` | `POST /api/v1/integrations/campus/import` | `IntegrationsService.importFromCampus` (demo) | `materials` | `integrations.test.ts` |
+| RF-047 | HU-016 | `CourseImportPreview` | `POST /api/v1/integrations/campus/import` | `IntegrationsService.importFromCampus` | `materials` | `integrations.test.ts` |
+| RF-048 | HU-016 | `CourseImportPreview` | `POST /api/v1/integrations/campus/import` | `IntegrationsService.importFromCampus` | — | `integrations.test.ts` |
+| RF-049 | HU-017 | `IntegrationsPage` | `DELETE /api/v1/integrations/campus/disconnect` | `IntegrationsService.disconnect` | `integrations` | `integrations.test.ts` |
+| RF-050 | HU-015 | `CampusSelector` (sin password) | — | Zod `strictObject` | No password storage | `integrations.test.ts` |
 
 ---
 
@@ -130,7 +158,7 @@
 
 | RF | HU | Frontend | Endpoint | Service | Database | Test |
 |----|-----|----------|----------|---------|----------|------|
-| RF-073 | HU-025 | `IntegrationsPage` (Teams) | `POST /api/v1/integrations/teams/connect` | `TeamsService.connect` | `integrations` | `teams.service.test.ts` |
+| RF-073 | HU-025 | `OnboardingWizard`, `CampusSelector` | `GET /api/v1/integrations/teams/auth-url`, `POST /integrations/teams/callback`, `POST /integrations/teams/connect` | `IntegrationsService` | `integrations` | `integrations.test.ts` |
 | RF-074 | HU-025 | `TeamsPermissionDialog` | `POST /api/v1/integrations/teams/connect` | `TeamsService.requestPermissions` | — | `teams.service.test.ts` |
 | RF-075 | HU-025 | `TeamsMeetingsList` | `GET /api/v1/integrations/teams/meetings` | `TeamsService.listMeetings` | — | `teams.service.test.ts` |
 | RF-076 | HU-026 | — (async) | — (job) | `TeamsService.fetchTranscript` | `transcripts` | `teams.service.test.ts` |
