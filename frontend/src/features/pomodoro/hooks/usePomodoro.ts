@@ -14,13 +14,10 @@ export function usePomodoro({ durationSeconds = POMODORO_SECONDS, onFinished }: 
   const endAtRef = useRef<number | null>(null);
   const notifiedRef = useRef(false);
   const onFinishedRef = useRef(onFinished);
-  onFinishedRef.current = onFinished;
 
   useEffect(() => {
-    if (status === 'idle') {
-      setRemainingSeconds(durationSeconds);
-    }
-  }, [durationSeconds, status]);
+    onFinishedRef.current = onFinished;
+  }, [onFinished]);
 
   useEffect(() => {
     if (status !== 'running' || endAtRef.current === null) return undefined;
@@ -33,7 +30,6 @@ export function usePomodoro({ durationSeconds = POMODORO_SECONDS, onFinished }: 
       }
     };
 
-    tick();
     const id = window.setInterval(tick, 250);
     return () => window.clearInterval(id);
   }, [status]);
@@ -67,5 +63,11 @@ export function usePomodoro({ durationSeconds = POMODORO_SECONDS, onFinished }: 
     setStatus('idle');
   };
 
-  return { status, remainingSeconds, start, pause, reset };
+  return {
+    status,
+    remainingSeconds: status === 'idle' ? durationSeconds : remainingSeconds,
+    start,
+    pause,
+    reset,
+  };
 }

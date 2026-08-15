@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
 import { coursesService } from '../../courses/services/coursesService';
@@ -22,8 +22,6 @@ export function SidebarPomodoro({
   const queryClient = useQueryClient();
   const [courseId, setCourseId] = useState('');
   const launchedRef = useRef(false);
-  const courseIdRef = useRef(courseId);
-  courseIdRef.current = courseId;
 
   const coursesQuery = useQuery({
     queryKey: ['courses', 'all'],
@@ -44,22 +42,35 @@ export function SidebarPomodoro({
     },
   });
 
-  const askCourseQuestions = (id = courseIdRef.current): void => {
-    if (!id || generate.isPending || launchedRef.current) return;
+  const { status, remainingSeconds, start, pause, reset } = usePomodoro({ durationSeconds });
+
+  useEffect(() => {
+    if (status !== 'finished') {
+      launchedRef.current = false;
+      return;
+    }
+    if (!courseId || launchedRef.current || generate.isPending) return;
     launchedRef.current = true;
-    generate.mutate(id, {
-      onSettled: () => {
-        launchedRef.current = false;
-      },
-    });
+    generate.mutate(courseId);
+  }, [status, courseId, generate]);
+
+  const startSession = (): void => {
+    launchedRef.current = false;
+    generate.reset();
+    start();
   };
 
-  const { status, remainingSeconds, start, pause, reset } = usePomodoro({
-    durationSeconds,
-    onFinished: () => {
-      askCourseQuestions();
-    },
-  });
+  const resetSession = (): void => {
+    launchedRef.current = false;
+    generate.reset();
+    reset();
+  };
+
+  const askCourseQuestions = (): void => {
+    if (!courseId || generate.isPending) return;
+    launchedRef.current = true;
+    generate.mutate(courseId);
+  };
 
   const coursesReady = courses.length > 0;
   const selectedName = courses.find((course) => course.id === courseId)?.name;
@@ -130,7 +141,7 @@ export function SidebarPomodoro({
         ) : (
           <Button
             className="w-full px-3 py-1.5 text-xs"
-            onClick={start}
+            onClick={startSession}
             disabled={status === 'finished' && generate.isPending}
           >
             {status === 'paused' ? 'Reanudar' : status === 'finished' ? 'Otro pomodoro' : 'Iniciar'}
@@ -141,13 +152,13 @@ export function SidebarPomodoro({
             variant="secondary"
             className="w-full px-3 py-1.5 text-xs"
             loading={generate.isPending}
-            onClick={() => askCourseQuestions()}
+            onClick={askCourseQuestions}
           >
             Hacer preguntas
           </Button>
         ) : null}
         {status !== 'idle' && status !== 'finished' ? (
-          <Button variant="secondary" className="w-full px-3 py-1.5 text-xs" onClick={reset}>
+          <Button variant="secondary" className="w-full px-3 py-1.5 text-xs" onClick={resetSession}>
             Reiniciar
           </Button>
         ) : null}
