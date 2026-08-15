@@ -12,27 +12,9 @@ if (!rootElement) {
   throw new Error('Root element #root not found');
 }
 
-const envIsMissing = missingPublicEnvKeys.length > 0;
-
-// #region agent log
-fetch('http://127.0.0.1:7774/ingest/f4cb5b74-6463-4ea1-9d46-b02c79f9768f', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0b41ed' },
-  body: JSON.stringify({
-    sessionId: '0b41ed',
-    runId: 'post-fix',
-    hypothesisId: 'D',
-    location: 'frontend/src/main.tsx:render',
-    message: envIsMissing ? 'rendering missing env screen' : 'rendering app router',
-    data: { envIsMissing, missingCount: missingPublicEnvKeys.length },
-    timestamp: Date.now(),
-  }),
-}).catch(() => {});
-// #endregion
-
 createRoot(rootElement).render(
   <StrictMode>
-    {envIsMissing ? (
+    {missingPublicEnvKeys.length > 0 ? (
       <MissingPublicEnvScreen missingKeys={missingPublicEnvKeys} />
     ) : (
       <AppProviders>
