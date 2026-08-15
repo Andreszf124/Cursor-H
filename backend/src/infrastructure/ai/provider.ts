@@ -331,6 +331,40 @@ function topKeywords(text: string, limit: number): string[] {
     .map(([word]) => word);
 }
 
+function stubTutorReply(prompt: string): string {
+  const question =
+    prompt.match(/Pregunta del estudiante:\s*([\s\S]+)$/)?.[1]?.trim() ?? 'tu duda';
+  const hasMaterials = !prompt.includes('Materiales del estudiante: ninguno.');
+  const mode = prompt.match(/Modo:\s*(explain|rephrase|example|analogy|error)/)?.[1] ?? 'explain';
+  const excerpt = prompt.match(/\[1\]\s*(?:\([^)]+\)\s*)?(.+)/)?.[1]?.trim().slice(0, 180);
+
+  if (!hasMaterials) {
+    return [
+      'No tengo material tuyo indexado para responder con evidencia de clase.',
+      `Preguntaste: "${question.slice(0, 180)}".`,
+      'Sube apuntes del curso o registra un check-in. Hasta entonces no invento una explicación como si viniera de tus clases.',
+    ].join(' ');
+  }
+
+  const fromNotes = excerpt
+    ? `Según tus apuntes: ${excerpt}`
+    : 'Tengo fragmentos de tus materiales.';
+
+  if (mode === 'rephrase') {
+    return `${fromNotes} Dicho de otra forma: quédate en lo que el fragmento describe, sin agregar teoría que no esté ahí.`;
+  }
+  if (mode === 'example') {
+    return `${fromNotes} Ejemplo: aplica el mismo paso a un caso corto y comprueba si coincide con lo escrito en tus apuntes.`;
+  }
+  if (mode === 'analogy') {
+    return `${fromNotes} Analogía: es como seguir una receta que ya anotaste; cada paso del apunte es un ingrediente, no un truco nuevo.`;
+  }
+  if (mode === 'error') {
+    return `${fromNotes} Si tu resultado no cuadra, el error suele estar en un paso que no coincide con el material. Relee ese fragmento y compara tu procedimiento.`;
+  }
+  return `${fromNotes} Explicación: usa solo lo que sí está en tus materiales. Si el apunte no cubre un detalle, es un hueco, no un hecho.`;
+}
+
 const EMBEDDING_DIMENSIONS = 8;
 
 /**
@@ -358,6 +392,9 @@ class StubAIProvider implements AIProvider {
   }
 
   generateText(prompt: string): Promise<string> {
+    if (prompt.includes('Eres un tutor académico de Academic Ya!')) {
+      return Promise.resolve(stubTutorReply(prompt));
+    }
     const keywords = topKeywords(prompt, 3);
     const focus = keywords.length > 0 ? keywords.join(', ') : 'el tema solicitado';
     return Promise.resolve(

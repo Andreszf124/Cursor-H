@@ -18,6 +18,8 @@ import {
 } from '../../schedule/lib/nextClass';
 import { scheduleService } from '../../schedule/services/scheduleService';
 import { useAuthStore } from '../../../stores/authStore';
+import { StartMenu } from '../components/StartMenu';
+import { practiceHref } from '../lib/startMenu';
 
 export function HomePage() {
   const email = useAuthStore((state) => state.user?.email);
@@ -75,11 +77,16 @@ export function HomePage() {
         <h1 className="text-2xl font-semibold text-slate-900">
           {greetingFor()}, {name}
         </h1>
+        <p className="mt-1 text-sm text-slate-500">
+          Elige qué hacer ahora: cursos, práctica, tutor o tu horario.
+        </p>
       </header>
 
       {schedulesQuery.error || gapsQuery.error || overviewQuery.error ? (
         <Alert variant="error">No se pudo cargar tu resumen. Intenta de nuevo.</Alert>
       ) : null}
+
+      <StartMenu />
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">Hoy</h2>
@@ -99,7 +106,7 @@ export function HomePage() {
                 </ButtonLink>
               </div>
             ) : null}
-            {next ? (
+            {next && nextCourseId ? (
               <>
                 <p className="mt-3 text-lg font-semibold text-slate-900">{nextCourseName}</p>
                 <p className="mt-1 text-sm text-slate-600">{formatClassWhen(next.startsAt)}</p>
@@ -109,12 +116,20 @@ export function HomePage() {
                     {formatClock(next.schedule.end_time)}
                   </p>
                 ) : null}
-                <ButtonLink to={`/courses/${nextCourseId}`} className="mt-4">
-                  Prepararme para la clase
-                </ButtonLink>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <ButtonLink to={`/tutor?course=${nextCourseId}`}>Prepararme con el tutor</ButtonLink>
+                  <ButtonLink to={`/courses/${nextCourseId}`} variant="secondary">
+                    Ir al curso
+                  </ButtonLink>
+                </div>
               </>
             ) : (
-              <p className="mt-3 text-sm text-slate-600">No tienes clases programadas en los próximos días.</p>
+              <div className="mt-3">
+                <p className="text-sm text-slate-600">No tienes clases programadas en los próximos días.</p>
+                <ButtonLink to="/courses" variant="secondary" className="mt-4">
+                  Agregar curso u horario
+                </ButtonLink>
+              </div>
             )}
           </>
         )}
@@ -136,17 +151,31 @@ export function HomePage() {
             ) : (
               <p className="mt-1 text-sm text-slate-600">Según tu última evidencia, conviene reforzar este tema.</p>
             )}
-            <ButtonLink
-              to={gap.course_id ? `/courses/${gap.course_id}?tab=practica` : '/courses'}
-              className="mt-4"
-            >
-              Practicar
-            </ButtonLink>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <ButtonLink to={practiceHref(gap.course_id, gap.concept_id)}>Practicar</ButtonLink>
+              {gap.course_id ? (
+                <ButtonLink to={`/tutor?course=${gap.course_id}`} variant="secondary">
+                  Preguntar al tutor
+                </ButtonLink>
+              ) : (
+                <ButtonLink to="/tutor" variant="secondary">
+                  Preguntar al tutor
+                </ButtonLink>
+              )}
+            </div>
           </>
         ) : (
           <EmptyState
             title="Todavía no hay un tema para reforzar"
-            description="Completa un check-in después de clase para que podamos recomendarte con evidencia."
+            description="Completa un check-in después de clase, o entra a práctica y al tutor cuando quieras estudiar."
+            action={
+              <div className="flex flex-wrap justify-center gap-2">
+                <ButtonLink to="/practice">Ir a práctica</ButtonLink>
+                <ButtonLink to="/tutor" variant="secondary">
+                  Abrir tutor
+                </ButtonLink>
+              </div>
+            }
           />
         )}
       </section>
@@ -163,15 +192,8 @@ export function HomePage() {
                 <ProgressBar value={overview?.average_mastery ?? 0} label="Dominio general" />
               </div>
             ) : null}
-            <ButtonLink
-              to={
-                continuePractice.course_id
-                  ? `/courses/${continuePractice.course_id}?tab=practica`
-                  : '/practice'
-              }
-              className="mt-4"
-            >
-              Continuar
+            <ButtonLink to={`/practice/${continuePractice.id}`} className="mt-4">
+              Continuar práctica
             </ButtonLink>
           </>
         ) : hasTrackedProgress ? (
@@ -188,7 +210,14 @@ export function HomePage() {
           <EmptyState
             title="Aún no medimos tu dominio"
             description="Cuando practiques o registres una clase, aquí verás por dónde continuar."
-            action={<ButtonLink to="/courses" variant="secondary">Ir a mis cursos</ButtonLink>}
+            action={
+              <div className="flex flex-wrap justify-center gap-2">
+                <ButtonLink to="/courses" variant="secondary">
+                  Ir a mis cursos
+                </ButtonLink>
+                <ButtonLink to="/practice">Ir a práctica</ButtonLink>
+              </div>
+            }
           />
         )}
       </section>

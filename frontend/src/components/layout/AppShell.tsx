@@ -1,18 +1,20 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../features/auth/hooks/useAuth';
+import { SidebarPomodoro } from '../../features/pomodoro/components/SidebarPomodoro';
 
 interface NavItem {
   to: string;
   label: string;
   shortLabel: string;
   end?: boolean;
-  icon: 'home' | 'courses' | 'calendar' | 'progress' | 'tutor' | 'profile';
+  icon: 'home' | 'courses' | 'calendar' | 'progress' | 'tutor' | 'profile' | 'practice';
 }
 
 const DESKTOP_NAV: NavItem[] = [
   { to: '/', label: 'Inicio', shortLabel: 'Inicio', end: true, icon: 'home' },
   { to: '/courses', label: 'Mis cursos', shortLabel: 'Cursos', icon: 'courses' },
+  { to: '/practice', label: 'Práctica', shortLabel: 'Práctica', icon: 'practice' },
   { to: '/schedule', label: 'Calendario', shortLabel: 'Calendario', icon: 'calendar' },
   { to: '/progress', label: 'Progreso', shortLabel: 'Progreso', icon: 'progress' },
   { to: '/tutor', label: 'Tutor IA', shortLabel: 'Tutor', icon: 'tutor' },
@@ -21,7 +23,7 @@ const DESKTOP_NAV: NavItem[] = [
 const MOBILE_NAV: NavItem[] = [
   { to: '/', label: 'Inicio', shortLabel: 'Inicio', end: true, icon: 'home' },
   { to: '/courses', label: 'Mis cursos', shortLabel: 'Cursos', icon: 'courses' },
-  { to: '/schedule', label: 'Calendario', shortLabel: 'Calendario', icon: 'calendar' },
+  { to: '/practice', label: 'Práctica', shortLabel: 'Práctica', icon: 'practice' },
   { to: '/tutor', label: 'Tutor IA', shortLabel: 'Tutor', icon: 'tutor' },
   { to: '/progress', label: 'Progreso', shortLabel: 'Progreso', icon: 'progress' },
 ];
@@ -69,6 +71,13 @@ function NavIcon({ name }: { name: NavItem['icon'] }) {
           <path d="M8 15l4-5 3 3 5-7" />
         </svg>
       );
+    case 'practice':
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+          <path d="M8 4h8l4 4v12H8z" />
+          <path d="M12 4v4h4M10 13h6M10 17h4" />
+        </svg>
+      );
     case 'tutor':
       return (
         <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
@@ -101,9 +110,9 @@ export function AppShell() {
     <div className="flex min-h-screen bg-slate-50">
       <aside className="hidden w-60 shrink-0 flex-col border-r border-slate-200 bg-white lg:flex">
         <Link to="/" className="border-b border-slate-100 px-5 py-4 text-base font-semibold text-slate-900">
-          Academic Copilot
+          Academic Ya!
         </Link>
-        <nav className="flex-1 space-y-1 px-3 py-4" aria-label="Principal">
+        <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Principal">
           {DESKTOP_NAV.map((item) => (
             <NavLink
               key={item.to}
@@ -117,6 +126,9 @@ export function AppShell() {
           ))}
         </nav>
         <div className="border-t border-slate-100 px-3 py-3">
+          <SidebarPomodoro idPrefix="pomodoro-desktop" />
+        </div>
+        <div className="border-t border-slate-100 px-3 py-3">
           <NavLink to={PROFILE_NAV.to} className={({ isActive }) => navClass(isActive)}>
             <NavIcon name="profile" />
             {PROFILE_NAV.label}
@@ -127,7 +139,7 @@ export function AppShell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3">
           <Link to="/" className="text-base font-semibold text-slate-900 lg:hidden">
-            Academic Copilot
+            Academic Ya!
           </Link>
           <div className="ml-auto flex items-center gap-3">
             {user && <span className="hidden text-sm text-slate-500 sm:inline">{user.email}</span>}
@@ -136,6 +148,9 @@ export function AppShell() {
             </Button>
           </div>
         </header>
+        <div className="border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
+          <SidebarPomodoro compact idPrefix="pomodoro-mobile" />
+        </div>
 
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 pb-24 lg:pb-8">
           <Outlet />

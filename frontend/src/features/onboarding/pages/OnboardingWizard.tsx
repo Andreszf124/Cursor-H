@@ -184,7 +184,7 @@ export function OnboardingWizard() {
                 Atrás
               </Button>
               <Button type="submit" loading={busy} className="flex-1">
-                Entrar a Academic Copilot
+                Entrar a Academic Ya!
               </Button>
             </div>
           </form>

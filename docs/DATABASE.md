@@ -1,4 +1,4 @@
-# Academic Copilot — Modelo de Datos
+# Academic Ya! — Modelo de Datos
 
 > **Estado:** Diseño propuesto  
 > **Motor:** PostgreSQL (Supabase)  

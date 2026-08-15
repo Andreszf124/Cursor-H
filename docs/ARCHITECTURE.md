@@ -1,4 +1,4 @@
-# Academic Copilot — Arquitectura del Sistema
+# Academic Ya! — Arquitectura del Sistema
 
 > **Estado:** Propuesta de diseño  
 > **Versión:** 0.1.0
@@ -7,7 +7,7 @@
 
 ## 1. Visión arquitectónica
 
-Academic Copilot sigue una arquitectura **cliente-servidor desacoplada** con procesamiento asíncrono para cargas pesadas (PDF, video, embeddings). La seguridad se implementa en **tres capas**: RLS (PostgreSQL), autorización backend y validación de entrada.
+Academic Ya! sigue una arquitectura **cliente-servidor desacoplada** con procesamiento asíncrono para cargas pesadas (PDF, video, embeddings). La seguridad se implementa en **tres capas**: RLS (PostgreSQL), autorización backend y validación de entrada.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐

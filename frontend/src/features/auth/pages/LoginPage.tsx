@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Alert } from '../../../components/feedback/Alert';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
-import { AuthCard } from '../components/AuthCard';
+import { AuthMarketingLayout } from '../components/AuthMarketingLayout';
 import { useAuth } from '../hooks/useAuth';
 import { loginSchema, type LoginInput } from '../schemas';
 
@@ -27,8 +27,10 @@ export function LoginPage() {
   });
 
   return (
-    <AuthCard title="Iniciar sesión" subtitle="Bienvenido de nuevo a Academic Copilot">
-      <form onSubmit={(event) => void onSubmit(event)} noValidate className="space-y-4">
+    <AuthMarketingLayout>
+      <h2 className="text-2xl font-semibold text-slate-900">Iniciar sesión</h2>
+      <p className="mt-1 text-sm text-slate-600">Entra para retomar tus cursos, prácticas y check-ins.</p>
+      <form onSubmit={(event) => void onSubmit(event)} noValidate className="mt-6 space-y-4">
         {login.error && <Alert variant="error">{login.error.message}</Alert>}
 
         <Input
@@ -64,6 +66,6 @@ export function LoginPage() {
           </Link>
         </p>
       </div>
-    </AuthCard>
+    </AuthMarketingLayout>
   );
 }

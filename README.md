@@ -1,4 +1,4 @@
-# Academic Copilot
+# Academic Ya!
 
 Plataforma de acompañamiento académico personalizado para estudiantes universitarios.
 

@@ -1,4 +1,4 @@
-# Academic Copilot — Plan de Desarrollo
+# Academic Ya! — Plan de Desarrollo
 
 > **Metodología:** Desarrollo incremental por módulos  
 > **Regla:** No avanzar al siguiente módulo sin tests + validación

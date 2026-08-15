@@ -388,7 +388,7 @@ function MaterialesTab({
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-          Recomendado por Academic Copilot
+          Recomendado por Academic Ya!
         </h2>
         {recommended.length === 0 ? (
           <p className="mt-3 text-sm text-slate-600">

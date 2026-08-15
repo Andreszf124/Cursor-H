@@ -17,6 +17,61 @@ const MODE_INSTRUCTIONS: Record<TutorMode, string> = {
   error: 'Identifica el error del estudiante y explica por qué ocurre.',
 };
 
+const DEFAULT_TITLES = new Set(['Nueva conversación', 'Nueva consulta']);
+const HISTORY_LIMIT = 8;
+
+interface HistoryMessage {
+  role: string;
+  content: string;
+}
+
+function conversationTitleFromMessage(message: string): string {
+  const compact = message.replace(/\s+/g, ' ').trim();
+  return compact.slice(0, 80) || 'Nueva conversación';
+}
+
+export function buildTutorPrompt(input: {
+  mode: TutorMode;
+  courseName: string | null;
+  chunks: Array<{ title: string | null; content: string }>;
+  history: HistoryMessage[];
+  question: string;
+}): string {
+  const materials =
+    input.chunks.length === 0
+      ? 'Materiales del estudiante: ninguno.'
+      : [
+          'Materiales del estudiante:',
+          ...input.chunks.map((chunk, index) => {
+            const label = chunk.title ? `${chunk.title}` : 'Material';
+            return `[${index + 1}] (${label}) ${chunk.content}`;
+          }),
+        ].join('\n');
+
+  const history =
+    input.history.length === 0
+      ? 'Historial: vacío.'
+      : [
+          'Historial reciente:',
+          ...input.history.map((item) => {
+            const who = item.role === 'user' ? 'Estudiante' : 'Tutor';
+            return `${who}: ${item.content}`;
+          }),
+        ].join('\n');
+
+  return [
+    'Eres un tutor académico de Academic Ya!',
+    input.courseName ? `Curso: ${input.courseName}.` : 'Curso: no seleccionado.',
+    `Modo: ${input.mode}. ${MODE_INSTRUCTIONS[input.mode]}`,
+    'Reglas: responde solo con el material del estudiante y conocimiento general mínimo para enlazar ideas.',
+    'Si no hay materiales, dilo con claridad y no inventes una explicación como si viniera de sus clases.',
+    'No reveles datos de otros estudiantes. Cita el material cuando lo uses.',
+    materials,
+    history,
+    `Pregunta del estudiante: ${input.question}`,
+  ].join('\n\n');
+}
+
 export class TutorService {
   /** RF-099 */
   async createConversation(token: string, userId: string, input: CreateConversation) {
@@ -75,21 +130,28 @@ export class TutorService {
   }
 
   /**
-   * RF-100–106 — turno de chat con contexto RAG.
+   * RF-100–106 — turno de chat con contexto RAG e historial.
    * El retrieval usa el student_id del JWT: nunca material de otro estudiante.
    */
   async chat(token: string, userId: string, input: Chat) {
+    if (input.course_id) await this.assertCourse(token, userId, input.course_id);
+
     const conversation = input.conversation_id
       ? await this.getConversation(token, userId, input.conversation_id)
       : await this.createConversation(token, userId, {
-          title: input.message.slice(0, 80),
+          title: conversationTitleFromMessage(input.message),
           course_id: input.course_id ?? null,
           concept_id: null,
         });
 
-    const supabase = createUserClient(token);
-    const chunks = await retrieveChunks(token, userId, input.message, 5);
+    const courseId = (input.course_id ?? conversation.course_id ?? null) as string | null;
+    const courseName = courseId ? await this.courseName(token, userId, courseId) : null;
+    const history = ((await this.listMessages(token, userId, conversation.id)) as HistoryMessage[]).slice(
+      -HISTORY_LIMIT,
+    );
+    const chunks = await retrieveChunks(token, userId, input.message, 5, { courseId });
 
+    const supabase = createUserClient(token);
     await supabase.from('tutor_messages').insert({
       conversation_id: conversation.id,
       student_id: userId,
@@ -97,17 +159,18 @@ export class TutorService {
       content: input.message,
     });
 
-    const context = chunks.map((chunk, index) => `[${index + 1}] ${chunk.content}`).join('\n');
-    const prompt = [
-      MODE_INSTRUCTIONS[input.mode],
-      context ? `Contexto del material del estudiante:\n${context}` : 'Sin material indexado.',
-      `Pregunta: ${input.message}`,
-    ].join('\n\n');
-
+    const prompt = buildTutorPrompt({
+      mode: input.mode,
+      courseName,
+      chunks,
+      history,
+      question: input.message,
+    });
     const answer = await getAIProvider().generateText(prompt);
     const sources = chunks.map((chunk) => ({
       chunk_id: chunk.chunk_id,
       material_id: chunk.material_id,
+      title: chunk.title,
       similarity: Math.round(chunk.similarity * 1000) / 1000,
     }));
 
@@ -124,24 +187,42 @@ export class TutorService {
       .single();
     if (error || !message) throw new AppError('No se pudo guardar la respuesta', 500, 'DB_ERROR');
 
+    const nextTitle = DEFAULT_TITLES.has(String(conversation.title ?? ''))
+      ? conversationTitleFromMessage(input.message)
+      : conversation.title;
     await supabase
       .from('tutor_conversations')
-      .update({ updated_at: new Date().toISOString() })
+      .update({
+        updated_at: new Date().toISOString(),
+        title: nextTitle,
+        course_id: courseId,
+      })
       .eq('id', conversation.id)
       .eq('student_id', userId);
 
-    return { conversation_id: conversation.id, message, sources };
+    return {
+      conversation_id: conversation.id,
+      message,
+      sources,
+      used_materials: chunks.length > 0,
+    };
   }
 
   private async assertCourse(token: string, userId: string, courseId: string): Promise<void> {
+    const course = await this.courseName(token, userId, courseId);
+    if (!course) throw new NotFoundError('Curso no encontrado');
+  }
+
+  private async courseName(token: string, userId: string, courseId: string): Promise<string | null> {
     const supabase = createUserClient(token);
     const { data } = await supabase
       .from('courses')
-      .select('id')
+      .select('id, name')
       .eq('id', courseId)
       .eq('student_id', userId)
       .maybeSingle();
-    if (!data) throw new NotFoundError('Curso no encontrado');
+    if (!data) return null;
+    return String((data as { name?: string }).name ?? 'Curso');
   }
 }
 

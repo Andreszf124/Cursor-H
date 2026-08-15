@@ -1,5 +1,4 @@
 import { SimpleListPage } from '../../components/SimpleListPage';
-import { TutorWorkspace } from './TutorWorkspace';
 
 export function MaterialsPage() {
   return (
@@ -47,10 +46,6 @@ export function GapsPage() {
       emptyText="Sin brechas abiertas."
     />
   );
-}
-
-export function TutorPage() {
-  return <TutorWorkspace />;
 }
 
 export function ClassesPage() {

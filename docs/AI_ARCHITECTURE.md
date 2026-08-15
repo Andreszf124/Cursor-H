@@ -1,4 +1,4 @@
-# Academic Copilot — Arquitectura de IA
+# Academic Ya! — Arquitectura de IA
 
 > **Principio:** La aplicación NO debe quedar acoplada a un único proveedor de IA
 
@@ -6,7 +6,7 @@
 
 ## 1. Visión general
 
-Academic Copilot utiliza IA en múltiples puntos del flujo académico. Todos los consumidores de IA interactúan con una **abstracción `AIProvider`**, permitiendo cambiar de proveedor (OpenAI, Anthropic, Google, local) sin reescribir lógica de negocio.
+Academic Ya! utiliza IA en múltiples puntos del flujo académico. Todos los consumidores de IA interactúan con una **abstracción `AIProvider`**, permitiendo cambiar de proveedor (OpenAI, Anthropic, Google, local) sin reescribir lógica de negocio.
 
 ```
 ┌─────────────────────────────────────────────────────────┐

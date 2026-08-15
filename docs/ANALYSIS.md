@@ -1,4 +1,4 @@
-# Academic Copilot — Análisis del Sistema
+# Academic Ya! — Análisis del Sistema
 
 > **Estado:** Documento de diseño inicial  
 > **Fuente de verdad:** `Documentacion/🎓 ACADEMIC COPILOT.txt`  
@@ -8,7 +8,7 @@
 
 ## 1. Resumen ejecutivo
 
-Academic Copilot es una plataforma de acompañamiento académico personalizado para estudiantes universitarios. El sistema centraliza la gestión académica (carrera, cursos, horarios, materiales), captura el aprendizaje post-clase mediante check-ins, mantiene un motor de dominio de conceptos, detecta brechas de conocimiento y ofrece tutoría, prácticas y planes personalizados impulsados por IA.
+Academic Ya! es una plataforma de acompañamiento académico personalizado para estudiantes universitarios. El sistema centraliza la gestión académica (carrera, cursos, horarios, materiales), captura el aprendizaje post-clase mediante check-ins, mantiene un motor de dominio de conceptos, detecta brechas de conocimiento y ofrece tutoría, prácticas y planes personalizados impulsados por IA.
 
 El análisis confirma que el proyecto es **viable en fases**, con un MVP acotado que cubre el flujo principal: *registro → contexto académico → materiales → check-in → brechas → tutor/práctica → progreso*.
 

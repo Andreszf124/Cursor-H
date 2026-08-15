@@ -1,4 +1,4 @@
-# Academic Copilot — API REST
+# Academic Ya! — API REST
 
 > **Base URL:** `/api/v1`  
 > **Formato:** JSON  

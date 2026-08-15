@@ -1,6 +1,6 @@
 # Database — Migraciones Supabase
 
-Migraciones SQL de Academic Copilot. Fuente de diseño: [docs/DATABASE.md](../docs/DATABASE.md).
+Migraciones SQL de Academic Ya!. Fuente de diseño: [docs/DATABASE.md](../docs/DATABASE.md).
 
 ## Convenciones
 

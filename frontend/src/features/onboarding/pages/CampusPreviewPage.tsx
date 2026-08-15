@@ -48,7 +48,7 @@ export function CampusPreviewPage() {
         </p>
         <h1 className="mt-2 text-2xl font-bold text-slate-900">Mis cursos — I ciclo</h1>
         <p className="mt-2 text-sm text-slate-600">
-          En la universidad real tú iniciarías sesión en esta pestaña. Academic Copilot no ve tu
+          En la universidad real tú iniciarías sesión en esta pestaña. Academic Ya! no ve tu
           contraseña: solo lee los cursos visibles cuando pulsas escanear.
         </p>
         <ul className="mt-6 space-y-3">
@@ -78,7 +78,7 @@ export function CampusPreviewPage() {
           className="mt-6 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white"
           onClick={postScan}
         >
-          Enviar cursos a Academic Copilot
+          Enviar cursos a Academic Ya!
         </button>
         <p className="mt-3 text-xs text-slate-400">mensaje: {CAMPUS_SCAN_RESULT}</p>
       </div>

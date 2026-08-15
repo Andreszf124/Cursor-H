@@ -65,7 +65,7 @@ export function PreferencesForm({ preferences }: PreferencesFormProps) {
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <h2 className="text-lg font-semibold text-slate-900">Preferencias de aprendizaje</h2>
       <p className="mt-1 text-sm text-slate-600">
-        El copiloto adapta las sesiones de estudio a estas preferencias.
+        Academic Ya! adapta las sesiones de estudio a estas preferencias.
       </p>
 
       <form onSubmit={(event) => void onSubmit(event)} noValidate className="mt-4 space-y-4">

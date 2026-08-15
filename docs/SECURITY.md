@@ -1,4 +1,4 @@
-# Academic Copilot — Seguridad
+# Academic Ya! — Seguridad
 
 > **Clasificación:** Documento interno  
 > **Principio rector:** Un estudiante NUNCA accede a datos de otro estudiante

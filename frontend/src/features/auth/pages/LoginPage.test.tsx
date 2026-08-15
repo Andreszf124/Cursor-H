@@ -28,6 +28,16 @@ describe('LoginPage', () => {
     expect(screen.getByRole('button', { name: 'Iniciar sesión' })).toBeInTheDocument();
   });
 
+  it('explica qué permite hacer la app', () => {
+    renderWithProviders(<LoginPage />);
+    expect(screen.getByRole('heading', { name: 'Qué puedes hacer' })).toBeInTheDocument();
+    expect(screen.getByText('Registrar cursos y horario')).toBeInTheDocument();
+    expect(screen.getByText('Check-in después de clase')).toBeInTheDocument();
+    expect(screen.getByText('Practicar lo que se te traba')).toBeInTheDocument();
+    expect(screen.getByText('Preguntar al tutor')).toBeInTheDocument();
+    expect(screen.getByText('Ver tu dominio')).toBeInTheDocument();
+  });
+
   it('muestra errores de validación sin llamar al servicio', async () => {
     renderWithProviders(<LoginPage />);
     fireEvent.click(screen.getByRole('button', { name: 'Iniciar sesión' }));

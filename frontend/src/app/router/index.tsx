@@ -21,8 +21,8 @@ import {
   NotificationsPage,
   PreparationPage,
   ResourcesPage,
-  TutorPage,
 } from '../../features/modules/ModulePages';
+import { TutorPage } from '../../features/tutor/pages/TutorPage';
 import { ProgressPage } from '../../features/progress/pages/ProgressPage';
 import { PracticeHubPage } from '../../features/practice/pages/PracticeHubPage';
 import { PracticeSessionPage } from '../../features/practice/pages/PracticeSessionPage';

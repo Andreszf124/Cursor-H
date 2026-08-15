@@ -18,7 +18,7 @@ export function WizardLayout({ title, steps, current, tip, children }: WizardLay
     <div className="min-h-screen bg-slate-50">
       <div className="mx-auto grid min-h-screen max-w-6xl grid-cols-1 lg:grid-cols-[320px_1fr]">
         <aside className="border-b border-slate-200 bg-white px-6 py-8 lg:border-b-0 lg:border-r">
-          <p className="text-sm font-semibold text-indigo-600">Academic Copilot</p>
+          <p className="text-sm font-semibold text-indigo-600">Academic Ya!</p>
           <h1 className="mt-2 text-lg font-semibold text-slate-900">{title}</h1>
           <ol className="mt-8 space-y-3">
             {steps.map((step, index) => {

@@ -1,4 +1,4 @@
-# Academic Copilot — Matriz de Trazabilidad
+# Academic Ya! — Matriz de Trazabilidad
 
 > **Formato:** RF → HU → Módulo → Frontend → Endpoint → Service → Database → Test  
 > **Leyenda fases:** 🟢 MVP · 🟡 Fase 2 · 🔴 Fase 3
